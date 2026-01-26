@@ -15,9 +15,8 @@ export function hook_curl_getenv() {
         // Read the returned environment variable value  
         const varValue = retval.readUtf8String();
         log(`[curl_getenv] env var value: ${varValue}`);
-      } else {
-        log(`[curl_getenv] env var not found`);
-      }
+      } else 
+        log(`[curl_getenv] env var not found`);   
     }
   });
 }

@@ -17,9 +17,8 @@ export function hook_curl_global_init_mem() {
     },
 
     onLeave(retval) {
-      if (retval.toInt32() != 0) {
+      if (retval.toInt32() != 0) 
         log(`[curl_global_init_mem] failed: ${retval}`);
-      }
     },
 
   });

@@ -14,9 +14,8 @@ export function hook_curl_easy_getinfo() {
       log(`[curl_easy_getinfo] handle: ${handle} option: ${curlinfoname} - ${curlinfo}  parameter: ${parameter} `);
     },
     onLeave(retval) {
-      if (retval.toInt32() != 0) {
+      if (retval.toInt32() != 0)
         log(`[curl_easy_getinfo] failed: ${retval}`);
-      }
     },
   });
 }

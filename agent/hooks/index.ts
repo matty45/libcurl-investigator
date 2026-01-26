@@ -14,6 +14,7 @@ import { hook_curl_multi_wait } from "./curl/curl_multi_wait"
 import { hook_curl_mvaprintf } from "./curl/curl_mvaprintf"
 import { hook_curl_share_init } from "./curl/curl_share_init"
 import { hook_curl_share_setopt } from "./curl/curl_share_setopt"
+import { hook_curl_strnequal } from "./curl/curl_strnequal"
 
 export function initialize_hooks() {
     hook_curl_easy_init()
@@ -32,4 +33,5 @@ export function initialize_hooks() {
     hook_curl_getenv()
     hook_curl_share_init()
     hook_curl_share_setopt()
+    hook_curl_strnequal()
 }

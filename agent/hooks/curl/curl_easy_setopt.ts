@@ -14,9 +14,8 @@ export function hook_curl_easy_setopt() {
       log(`[curl_easy_setopt] handle: ${handle} option: ${curloptionname} - ${curloption}  parameter: ${parameter} `);
     },
     onLeave(retval) {
-      if (retval.toInt32() != 0) {
-        log(`[curl_easy_setopt] failed: ${retval}`);
-      }
+      if (retval.toInt32() != 0) 
+        log(`[curl_easy_setopt] failed: ${retval}`);     
     },
   });
 }

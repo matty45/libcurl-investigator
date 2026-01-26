@@ -33,9 +33,8 @@ export function hook_curl_multi_info_read() {
       // Also read the number of messages remaining  
       const msgsRemaining = this.msgsInQueuePtr.readU32();  
       log(`[curl_multi_info_read] Messages remaining in queue: ${msgsRemaining}`);  
-    } else {  
+    } else 
       log(`[curl_multi_info_read] No more messages`);  
-    }  
   }  
 });
 }

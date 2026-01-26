@@ -11,9 +11,8 @@ export function hook_curl_easy_perform() {
     },
 
     onLeave(retval) {
-      if (retval.toInt32() != 0) {
-        log(`[curl_easy_perform] failed: ${retval}`);
-      }
+      if (retval.toInt32() != 0) 
+        log(`[curl_easy_perform] failed: ${retval}`);  
     },
 
   });

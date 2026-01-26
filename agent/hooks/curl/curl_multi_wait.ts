@@ -15,9 +15,8 @@ export function hook_curl_multi_wait() {
       log(`[curl_multi_wait] multi_handle: ${multi_handle} extra_fds: ${extra_fds} extra_nfds: ${extra_nfds} timeout_ms: ${timeout_ms.toInt32()} numfds: ${numfds}`);
     },
     onLeave(retval) {
-      if (retval.toInt32() != 0) {
+      if (retval.toInt32() != 0)
         log(`[curl_multi_wait] failed: ${retval}`);
-      }
     }
   });
 

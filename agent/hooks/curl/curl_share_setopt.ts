@@ -14,9 +14,9 @@ export function hook_curl_share_setopt() {
       log(`[curl_share_setopt] handle: ${handle} option: ${curloptionname} - ${curloption}  parameter: ${parameter} `);
     },
     onLeave(retval) {
-      if (retval.toInt32() != 0) {
+      if (retval.toInt32() != 0)
         log(`[curl_share_setopt] failed: ${retval}`);
-      }
+
     },
   });
 }

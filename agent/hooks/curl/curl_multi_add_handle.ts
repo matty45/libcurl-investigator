@@ -12,9 +12,8 @@ export function hook_curl_multi_add_handle() {
     },
 
     onLeave(retval) {
-      if (retval.toInt32() != 0) {
+      if (retval.toInt32() != 0) 
         log(`[curl_multi_add_handle] failed: ${retval}`);
-      }
     },
 
   });

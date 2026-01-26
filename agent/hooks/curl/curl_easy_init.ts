@@ -9,6 +9,5 @@ export function hook_curl_easy_init() {
     onLeave(retval) {
       log(`[curl_easy_init] return value: ${retval}`);
     },
-
   });
 }

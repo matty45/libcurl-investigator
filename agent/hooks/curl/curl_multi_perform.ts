@@ -12,9 +12,8 @@ export function hook_curl_multi_perform() {
     },
 
     onLeave(retval) {
-      if (retval.toInt32() != 0) {
+      if (retval.toInt32() != 0) 
         log(`[curl_multi_perform] failed: ${retval}`);
-      }
     },
 
   });
