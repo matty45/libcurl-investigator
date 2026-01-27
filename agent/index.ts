@@ -1,4 +1,4 @@
-import { hook_curl_easy_init } from "./hooks/curl/curl_easy_init";
+import { hook_curl_easy_setopt } from "./hooks/curl/curl_easy_setopt";
 
 
 
@@ -6,4 +6,4 @@ import { hook_curl_easy_init } from "./hooks/curl/curl_easy_init";
 export const curl = Process.getModuleByName("libcurl.dll"); // Change this depending on the OS you are using!  
 
 // Execute hooks
-hook_curl_easy_init()
+hook_curl_easy_setopt()
