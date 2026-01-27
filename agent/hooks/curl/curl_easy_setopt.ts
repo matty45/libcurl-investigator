@@ -2,10 +2,6 @@ import { curl } from "../..";
 import { CurlOptions } from "../../globals/curl_opts";
 import { log } from "../../logger";
 
-// Add a Map to track counters per handle  
-const handleToId = new Map();
-let nextId = 0;
-
 let original_write_function_callback: ((buffer: NativePointer, size: number, nmemb: number, userdata: NativePointer) => number) | null = null;
 let original_header_function_callback = null;
 
@@ -13,49 +9,44 @@ export function hook_curl_easy_setopt() {
   const curl_easy_setopt = curl.getExportByName("curl_easy_setopt");
   Interceptor.attach(curl_easy_setopt, {
     onEnter(args) {
-      const handle = args[0].toString();
+      const handle = args[0];
       const curloption = args[1].toInt32();
       const parameter = args[2];
-
-      // Get existing ID or assign new one  
-      let id = handleToId.get(handle);
-      if (id === undefined) {
-        id = nextId++;
-        handleToId.set(handle, id);
-      }
 
       // Log with the assigned ID  
       switch (curloption) {
         case CurlOptions.Url: // CURLOPT_URL  
-          log(`ID: ${id} - URL: ${parameter.readUtf8String()}`);
+          const url = parameter.readUtf8String();
+
+          log(`URL: ${parameter.readUtf8String()}`);
           break;
 
         case CurlOptions.HttpGet: // CURLOPT_URL  
-          log(`ID: ${id} - HTTP-METHOD: GET`);
+          log(`HTTP-METHOD: GET`);
           break;
 
         case CurlOptions.Post: // CURLOPT_URL  
-          log(`ID: ${id} - HTTP-METHOD: POST`);
+          log(`HTTP-METHOD: POST`);
           break;
 
         case CurlOptions.UserAgent:
-          log(`ID: ${id} - USER-AGENT: ${parameter.readUtf8String()}`);
+          log(`USER-AGENT: ${parameter.readUtf8String()}`);
           break;
 
         case CurlOptions.PostFields:
-          log(`ID: ${id} - REQUEST-POST-DATA: ${parameter.readUtf8String()}`);
+          log(`REQUEST-POST-DATA: ${parameter.readUtf8String()}`);
           break;
 
         case CurlOptions.PostFieldSize:
-          log(`ID: ${id} - REQUEST-POST-DATA-SIZE: ${parameter.toInt32()}`);
+          log(`REQUEST-POST-DATA-SIZE: ${parameter.toInt32()}`);
           break;
 
         case CurlOptions.HttpVersion:
-          log(`ID: ${id} - HTTP-VERSION: ${parameter.toInt32()}`);
+          log(`HTTP-VERSION: ${parameter.toInt32()}`);
           break;
 
         case CurlOptions.HttpHeader:
-          print_request_headers(id, parameter)
+          print_request_headers(parameter)
           break;
 
 
@@ -75,7 +66,7 @@ export function hook_curl_easy_setopt() {
           break;
 
         default:
-          log(`ID: ${id} - Unhandled option: ${CurlOptions[curloption]} - param: ${parameter}`);
+          log(`Unhandled option: ${CurlOptions[curloption]} - param: ${parameter}`);
           break;
       }
 
@@ -87,7 +78,7 @@ export function hook_curl_easy_setopt() {
   });
 }
 
-function print_request_headers(id: any, param: any) {
+function print_request_headers(param: any) {
   const slistPointer = ptr(param);
   const headers = [];
   let current = slistPointer;
@@ -112,7 +103,7 @@ function print_request_headers(id: any, param: any) {
   }
 
   if (headers.length > 0) {
-    log(`ID: ${id} - REQUEST-HEADERS: ${headers.join(", ")}`);
+    log(`REQUEST-HEADERS: ${headers.join(", ")}`);
   }
 }
 
