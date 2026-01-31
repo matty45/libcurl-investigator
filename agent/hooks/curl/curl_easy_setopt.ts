@@ -50,7 +50,8 @@ export function hook_curl_easy_setopt() {
 
 
         case CurlOptions.WriteFunction:
-          log(`Original WriteFunc: ${parameter.sub(Process.mainModule.base)}`);
+          log(`Original WrietFunc: ${parameter} Offset: ${parameter.sub(Process.mainModule.base)}`);
+
           // Store the original callback (only once)
           if (parameter.toInt32() !== 0 && !original_write_function_callback) {
             original_write_function_callback = new NativeFunction(parameter, "uint", [
@@ -66,7 +67,7 @@ export function hook_curl_easy_setopt() {
           break;
           
         case CurlOptions.HeaderFunction:
-          log(`Original HeaderFunc: ${parameter.sub(Process.mainModule.base)}`);
+          log(`Original HeaderFunc: ${parameter} Offset: ${parameter.sub(Process.mainModule.base)}`);
 
         default:
           log(`Unhandled option: ${CurlOptions[curloption]} - param: ${parameter}`);
