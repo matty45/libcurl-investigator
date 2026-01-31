@@ -44,6 +44,34 @@ export function hook_curl_easy_init() {
 // Debug callback for if libcurl_debug is enabled
 const debugCallback = new NativeCallback((handle, infoType: curl_debug_infotypes, data, size, userptr) => {
 
-  log(`[CURL DEBUG ${handle} - ${curl_debug_infotypes[infoType]}]: ${data.readCString(size)}`);
-  return 0; // Return 0 for success  
+    switch (infoType) {
+
+        case curl_debug_infotypes.CURLINFO_TEXT: // CURLOPT_URL  
+            log(`[CURL DEBUG ${handle}]: ${data.readCString(size)}`);
+            break;
+        case curl_debug_infotypes.CURLINFO_HEADER_OUT:
+            log(`[CURL DEBUG ${handle}]: Sending header`);
+            break;
+        case curl_debug_infotypes.CURLINFO_DATA_OUT:
+            log(`[CURL DEBUG ${handle}]: Sending data`);
+            break;
+        case curl_debug_infotypes.CURLINFO_SSL_DATA_OUT:
+            log(`[CURL DEBUG ${handle}]: Sending SSL data`);
+            break;
+        case curl_debug_infotypes.CURLINFO_HEADER_IN:
+            log(`[CURL DEBUG ${handle}]: Recieved header data`);
+            break;
+        case curl_debug_infotypes.CURLINFO_DATA_IN:
+            log(`[CURL DEBUG ${handle}]: Recieved data`);
+            break;
+        case curl_debug_infotypes.CURLINFO_SSL_DATA_IN:
+            log(`[CURL DEBUG ${handle}]: Recieved SSL data`);
+            break;
+
+        default:
+            log(`CURL DEBUG ${handle}]: Unhandled debug type: ${curl_debug_infotypes[infoType]} - data: ${data}`);
+            break;
+    }
+
+    return 0; // Return 0 for success  
 }, 'int', ['pointer', 'int', 'pointer', 'int', 'pointer']);
