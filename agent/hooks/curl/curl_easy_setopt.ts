@@ -17,40 +17,40 @@ export function hook_curl_easy_setopt() {
       switch (curloption) {
         case CurlOptions.Url: // CURLOPT_URL  
 
-          log(`URL: ${parameter.readUtf8String()}`);
+          log(`[CURL ${handle}]: URL: ${parameter.readUtf8String()}`);
           break;
 
         case CurlOptions.HttpGet: // CURLOPT_URL  
-          log(`HTTP-METHOD: GET`);
+          log(`[CURL ${handle}]: HTTP-METHOD: GET`);
           break;
 
         case CurlOptions.Post: // CURLOPT_URL  
-          log(`HTTP-METHOD: POST`);
+          log(`[CURL ${handle}]: HTTP-METHOD: POST`);
           break;
 
         case CurlOptions.UserAgent:
-          log(`USER-AGENT: ${parameter.readUtf8String()}`);
+          log(`[CURL ${handle}]: USER-AGENT: ${parameter.readUtf8String()}`);
           break;
 
         case CurlOptions.PostFields:
-          log(`REQUEST-POST-DATA: ${parameter.readUtf8String()}`);
+          log(`[CURL ${handle}]: REQUEST-POST-DATA: ${parameter.readUtf8String()}`);
           break;
 
         case CurlOptions.PostFieldSize:
-          log(`REQUEST-POST-DATA-SIZE: ${parameter.toInt32()}`);
+          log(`[CURL ${handle}]: REQUEST-POST-DATA-SIZE: ${parameter.toInt32()}`);
           break;
 
         case CurlOptions.HttpVersion:
-          log(`HTTP-VERSION: ${parameter.toInt32()}`);
+          log(`[CURL ${handle}]: HTTP-VERSION: ${parameter.toInt32()}`);
           break;
 
         case CurlOptions.HttpHeader:
-          print_request_headers(parameter)
+          print_request_headers(handle,parameter)
           break;
 
 
         case CurlOptions.WriteFunction:
-          log(`Original WriteFunc: ${parameter} Offset: ${parameter.sub(Process.mainModule.base)}`);
+          log(`[CURL ${handle}]: Original WriteFunc: ${parameter} Offset: ${parameter.sub(Process.mainModule.base)}`);
 
           // Store the original callback (only once)
           if (parameter.toInt32() !== 0 && !original_write_function_callback) {
@@ -67,11 +67,11 @@ export function hook_curl_easy_setopt() {
           break;
           
         case CurlOptions.HeaderFunction:
-          log(`Original HeaderFunc: ${parameter} Offset: ${parameter.sub(Process.mainModule.base)}`);
+          log(`[CURL ${handle}]: Original HeaderFunc: ${parameter} Offset: ${parameter.sub(Process.mainModule.base)}`);
           break;
 
         default:
-          log(`Unhandled option: ${CurlOptions[curloption]} - param: ${parameter}`);
+          log(`[CURL ${handle}]: Unhandled option: ${CurlOptions[curloption]} - param: ${parameter}`);
           break;
       }
 
@@ -83,7 +83,7 @@ export function hook_curl_easy_setopt() {
   });
 }
 
-function print_request_headers(param: any) {
+function print_request_headers(handle: NativePointer, param: any) {
   const slistPointer = ptr(param);
   const headers = [];
   let current = slistPointer;
@@ -108,7 +108,7 @@ function print_request_headers(param: any) {
   }
 
   if (headers.length > 0) {
-    log(`REQUEST-HEADERS: ${headers.join(", ")}`);
+    log(`[CURL ${handle}]: REQUEST-HEADERS: ${headers.join(", ")}`);
   }
 }
 
