@@ -50,7 +50,7 @@ export function hook_curl_easy_setopt() {
 
 
         case CurlOptions.WriteFunction:
-          log(`Original WrietFunc: ${parameter} Offset: ${parameter.sub(Process.mainModule.base)}`);
+          log(`Original WriteFunc: ${parameter} Offset: ${parameter.sub(Process.mainModule.base)}`);
 
           // Store the original callback (only once)
           if (parameter.toInt32() !== 0 && !original_write_function_callback) {
@@ -68,6 +68,7 @@ export function hook_curl_easy_setopt() {
           
         case CurlOptions.HeaderFunction:
           log(`Original HeaderFunc: ${parameter} Offset: ${parameter.sub(Process.mainModule.base)}`);
+          break;
 
         default:
           log(`Unhandled option: ${CurlOptions[curloption]} - param: ${parameter}`);

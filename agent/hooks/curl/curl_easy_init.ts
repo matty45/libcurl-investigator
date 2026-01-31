@@ -22,7 +22,11 @@ export function hook_curl_easy_init() {
             }
 
             if (bypass_ssl_pinning) {
+                // Disable SSL certificate verification  
+                curl_easy_setopt(retval, CurlOptions.SslVerifyPeer, ptr(0));
+                curl_easy_setopt(retval, CurlOptions.SslVerifyhost, ptr(0));
 
+                log(`Disabled SSL verification for curl handle: ${retval}`);
             }
 
             if (libcurl_debug) {
