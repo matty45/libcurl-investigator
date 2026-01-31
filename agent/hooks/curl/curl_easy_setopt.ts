@@ -16,7 +16,6 @@ export function hook_curl_easy_setopt() {
       // Log with the assigned ID  
       switch (curloption) {
         case CurlOptions.Url: // CURLOPT_URL  
-          const url = parameter.readUtf8String();
 
           log(`URL: ${parameter.readUtf8String()}`);
           break;
@@ -51,6 +50,7 @@ export function hook_curl_easy_setopt() {
 
 
         case CurlOptions.WriteFunction:
+          log(`Original WriteFunc: ${parameter.sub(Process.mainModule.base)}`);
           // Store the original callback (only once)
           if (parameter.toInt32() !== 0 && !original_write_function_callback) {
             original_write_function_callback = new NativeFunction(parameter, "uint", [
@@ -64,6 +64,9 @@ export function hook_curl_easy_setopt() {
           // Replace with our callback
           args[2] = replacement_write_callback;
           break;
+          
+        case CurlOptions.HeaderFunction:
+          log(`Original HeaderFunc: ${parameter.sub(Process.mainModule.base)}`);
 
         default:
           log(`Unhandled option: ${CurlOptions[curloption]} - param: ${parameter}`);
