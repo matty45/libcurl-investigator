@@ -4,7 +4,7 @@ A tool for hooking into programs using libcurl to sniff traffic.
 ### How to compile & load
 
 ```sh
-$ pip install frida
+$ pip install frida-tools
 $ npm install
 $ frida binary.exe -l _agent.js
 ```
