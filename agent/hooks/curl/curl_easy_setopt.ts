@@ -1,4 +1,4 @@
-import { curl } from "../..";
+import { curl_easy_setopt_ptr } from "../..";
 import { CurlOptions } from "../../globals/curl_opts";
 import { log } from "../../logger";
 
@@ -6,8 +6,8 @@ let original_write_function_callback: ((buffer: NativePointer, size: number, nme
 let original_header_function_callback = null;
 
 export function hook_curl_easy_setopt() {
-  const curl_easy_setopt = curl.getExportByName("curl_easy_setopt");
-  Interceptor.attach(curl_easy_setopt, {
+
+  Interceptor.attach(curl_easy_setopt_ptr, {
     onEnter(args) {
       const handle = args[0];
       const curloption = args[1].toInt32();

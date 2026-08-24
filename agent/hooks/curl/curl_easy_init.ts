@@ -1,4 +1,4 @@
-import { bypass_ssl_pinning, curl, libcurl_debug, proxy_url } from "../..";
+import { bypass_ssl_pinning, curl_easy_init_ptr, curl_easy_setopt_ptr, libcurl_debug, proxy_url } from "../..";
 import { curl_debug_infotypes } from "../../globals/curl_debug_info_types";
 import { CurlOptions } from "../../globals/curl_opts";
 import { log } from "../../logger";
@@ -6,8 +6,7 @@ import { log } from "../../logger";
 
 
 export function hook_curl_easy_init() {
-    const curl_easy_init_ptr = curl.getExportByName("curl_easy_init");
-    const curl_easy_setopt = new NativeFunction(curl.getExportByName('curl_easy_setopt'), 'int', ['pointer', 'int', 'pointer']);
+    const curl_easy_setopt = new NativeFunction(curl_easy_setopt_ptr, 'int', ['pointer', 'int', 'pointer']);
 
 
     Interceptor.attach(curl_easy_init_ptr, {
