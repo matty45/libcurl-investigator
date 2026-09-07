@@ -10,7 +10,7 @@ export const curl_easy_setopt_ptr: NativePointer = ptr("0x144f158a0");
 export const proxy_url = ""
 
 // Bypass ssl pinning
-export const bypass_ssl_pinning = false;
+export const bypass_ssl_pinning = true;
 
 // Enable built-in libcurl debug components
 export const libcurl_debug = true;
